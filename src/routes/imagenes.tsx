@@ -1,9 +1,6 @@
 import { createFileRoute } from '@tanstack/react-router'
+import ListaImagenes from '@/components/ListaImagenes'
 
 export const Route = createFileRoute('/imagenes')({
-  component: RouteComponent,
+  component: ListaImagenes,
 })
-
-function RouteComponent() {
-  return <div>Hello "/imagenes"!</div>
-}
