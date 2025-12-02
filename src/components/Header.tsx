@@ -1,6 +1,6 @@
 import { Link } from '@tanstack/react-router'
 import { useState } from 'react'
-import { Home, Menu, Network, X, Settings, ListTodo } from 'lucide-react'
+import { Home, Menu, Network, X, Settings, ListTodo, Image } from 'lucide-react'
 import { useStore } from '@tanstack/react-store'
 import { appStore } from '../store/appStore'
 
@@ -210,6 +210,18 @@ const NavContent = ({ closeMenu }: { closeMenu?: () => void }) => {
       >
         <ListTodo size={20} />
         <span className="font-medium">Tasks</span>
+      </Link>
+
+      <Link
+        to="/imagenes"
+        onClick={handleClick}
+        className={`flex items-center gap-3 p-3 rounded-lg transition-colors mb-2 ${
+          theme === 'dark' ? 'hover:bg-gray-800' : 'hover:bg-gray-200'
+        }`}
+        activeProps={{ className: 'bg-cyan-600 hover:bg-cyan-700' }}
+      >
+        <Image size={20} />
+        <span className="font-medium">Imágenes</span>
       </Link>
     </nav>
   )

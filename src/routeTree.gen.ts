@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as TasksRouteImport } from './routes/tasks'
 import { Route as SettingsRouteImport } from './routes/settings'
+import { Route as ImagenesRouteImport } from './routes/imagenes'
 import { Route as HolaRouteImport } from './routes/hola'
 import { Route as HelloRouteImport } from './routes/hello'
 import { Route as AdiosRouteImport } from './routes/adios'
@@ -25,6 +26,11 @@ const TasksRoute = TasksRouteImport.update({
 const SettingsRoute = SettingsRouteImport.update({
   id: '/settings',
   path: '/settings',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ImagenesRoute = ImagenesRouteImport.update({
+  id: '/imagenes',
+  path: '/imagenes',
   getParentRoute: () => rootRouteImport,
 } as any)
 const HolaRoute = HolaRouteImport.update({
@@ -58,6 +64,7 @@ export interface FileRoutesByFullPath {
   '/adios': typeof AdiosRoute
   '/hello': typeof HelloRoute
   '/hola': typeof HolaRoute
+  '/imagenes': typeof ImagenesRoute
   '/settings': typeof SettingsRoute
   '/tasks': typeof TasksRoute
   '/demo/tanstack-query': typeof DemoTanstackQueryRoute
@@ -67,6 +74,7 @@ export interface FileRoutesByTo {
   '/adios': typeof AdiosRoute
   '/hello': typeof HelloRoute
   '/hola': typeof HolaRoute
+  '/imagenes': typeof ImagenesRoute
   '/settings': typeof SettingsRoute
   '/tasks': typeof TasksRoute
   '/demo/tanstack-query': typeof DemoTanstackQueryRoute
@@ -77,6 +85,7 @@ export interface FileRoutesById {
   '/adios': typeof AdiosRoute
   '/hello': typeof HelloRoute
   '/hola': typeof HolaRoute
+  '/imagenes': typeof ImagenesRoute
   '/settings': typeof SettingsRoute
   '/tasks': typeof TasksRoute
   '/demo/tanstack-query': typeof DemoTanstackQueryRoute
@@ -88,6 +97,7 @@ export interface FileRouteTypes {
     | '/adios'
     | '/hello'
     | '/hola'
+    | '/imagenes'
     | '/settings'
     | '/tasks'
     | '/demo/tanstack-query'
@@ -97,6 +107,7 @@ export interface FileRouteTypes {
     | '/adios'
     | '/hello'
     | '/hola'
+    | '/imagenes'
     | '/settings'
     | '/tasks'
     | '/demo/tanstack-query'
@@ -106,6 +117,7 @@ export interface FileRouteTypes {
     | '/adios'
     | '/hello'
     | '/hola'
+    | '/imagenes'
     | '/settings'
     | '/tasks'
     | '/demo/tanstack-query'
@@ -116,6 +128,7 @@ export interface RootRouteChildren {
   AdiosRoute: typeof AdiosRoute
   HelloRoute: typeof HelloRoute
   HolaRoute: typeof HolaRoute
+  ImagenesRoute: typeof ImagenesRoute
   SettingsRoute: typeof SettingsRoute
   TasksRoute: typeof TasksRoute
   DemoTanstackQueryRoute: typeof DemoTanstackQueryRoute
@@ -135,6 +148,13 @@ declare module '@tanstack/react-router' {
       path: '/settings'
       fullPath: '/settings'
       preLoaderRoute: typeof SettingsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/imagenes': {
+      id: '/imagenes'
+      path: '/imagenes'
+      fullPath: '/imagenes'
+      preLoaderRoute: typeof ImagenesRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/hola': {
@@ -180,6 +200,7 @@ const rootRouteChildren: RootRouteChildren = {
   AdiosRoute: AdiosRoute,
   HelloRoute: HelloRoute,
   HolaRoute: HolaRoute,
+  ImagenesRoute: ImagenesRoute,
   SettingsRoute: SettingsRoute,
   TasksRoute: TasksRoute,
   DemoTanstackQueryRoute: DemoTanstackQueryRoute,
