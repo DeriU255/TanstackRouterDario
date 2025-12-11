@@ -21,7 +21,6 @@ client.interceptors.request.use(
 client.interceptors.response.use(
   (response) => response.data,
   (error) => {
-    // Aquí podrías añadir lógica extra, como redirigir al login si recibes un 401
     throw new Error(error.response?.data?.message ?? "Error en la petición");
   }
 );
