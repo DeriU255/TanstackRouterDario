@@ -119,7 +119,6 @@ export default function Header() {
 const NavContent = ({ closeMenu }: { closeMenu?: () => void }) => {
   const theme = useStore(appStore, (state) => state.theme)
   const isMenuFixed = useStore(appStore, (state) => state.isMenuFixed)
-  const isAuthenticated = useStore(appStore, (state) => state.isAuthenticated)
 
   const handleClick = () => {
     if (!isMenuFixed && closeMenu) {
@@ -227,44 +226,38 @@ const NavContent = ({ closeMenu }: { closeMenu?: () => void }) => {
 
       <div className="my-2 border-t border-gray-300 dark:border-gray-700"></div>
 
-      {isAuthenticated && (
-        <>
-          <Link
-            to="/heroes"
-            onClick={handleClick}
-            className={`flex items-center gap-3 p-3 rounded-lg transition-colors mb-2 ${
-              theme === 'dark' ? 'hover:bg-gray-800' : 'hover:bg-gray-200'
-            }`}
-            activeProps={{ className: 'bg-cyan-600 hover:bg-cyan-700' }}
-          >
-            <span className="font-medium">Héroes</span>
-          </Link>
+      <Link
+        to="/heroes"
+        onClick={handleClick}
+        className={`flex items-center gap-3 p-3 rounded-lg transition-colors mb-2 ${
+          theme === 'dark' ? 'hover:bg-gray-800' : 'hover:bg-gray-200'
+        }`}
+        activeProps={{ className: 'bg-cyan-600 hover:bg-cyan-700' }}
+      >
+        <span className="font-medium">Héroes</span>
+      </Link>
 
-          <Link
-            to="/equipos"
-            onClick={handleClick}
-            className={`flex items-center gap-3 p-3 rounded-lg transition-colors mb-2 ${
-              theme === 'dark' ? 'hover:bg-gray-800' : 'hover:bg-gray-200'
-            }`}
-            activeProps={{ className: 'bg-cyan-600 hover:bg-cyan-700' }}
-          >
-            <span className="font-medium">Equipos</span>
-          </Link>
-        </>
-      )}
+      <Link
+        to="/equipos"
+        onClick={handleClick}
+        className={`flex items-center gap-3 p-3 rounded-lg transition-colors mb-2 ${
+          theme === 'dark' ? 'hover:bg-gray-800' : 'hover:bg-gray-200'
+        }`}
+        activeProps={{ className: 'bg-cyan-600 hover:bg-cyan-700' }}
+      >
+        <span className="font-medium">Equipos</span>
+      </Link>
 
-      {!isAuthenticated && (
-        <Link
-          to="/login"
-          onClick={handleClick}
-          className={`flex items-center gap-3 p-3 rounded-lg transition-colors mb-2 ${
-            theme === 'dark' ? 'hover:bg-gray-800' : 'hover:bg-gray-200'
-          }`}
-          activeProps={{ className: 'bg-cyan-600 hover:bg-cyan-700' }}
-        >
-          <span className="font-medium">Login</span>
-        </Link>
-      )}
+      <Link
+        to="/login"
+        onClick={handleClick}
+        className={`flex items-center gap-3 p-3 rounded-lg transition-colors mb-2 ${
+          theme === 'dark' ? 'hover:bg-gray-800' : 'hover:bg-gray-200'
+        }`}
+        activeProps={{ className: 'bg-cyan-600 hover:bg-cyan-700' }}
+      >
+        <span className="font-medium">Login</span>
+      </Link>
     </nav>
   )
 }

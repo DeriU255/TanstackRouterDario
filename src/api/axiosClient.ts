@@ -21,7 +21,9 @@ client.interceptors.request.use(
 client.interceptors.response.use(
   (response) => response.data,
   (error) => {
-    throw new Error(error.response?.data?.message ?? "Error en la petición");
+    // Mejor manejo de errores para depuración
+    console.error("Error Axios:", error.response || error.message);
+    throw new Error(error.response?.data?.message ?? error.message ?? "Error en la petición");
   }
 );
 
