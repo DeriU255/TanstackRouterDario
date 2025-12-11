@@ -2,6 +2,7 @@ import { createFileRoute, useNavigate } from '@tanstack/react-router'
 import { useState } from 'react'
 import { useMutation } from '@tanstack/react-query'
 import { login } from '../api/authService'
+import { setIsAuthenticated, setUser } from '../store/appStore'
 
 export const Route = createFileRoute('/login')({
   component: Login,
@@ -13,8 +14,16 @@ function Login() {
   const navigate = useNavigate()
 
   const mutation = useMutation({
-    mutationFn: () => login(username, password),
-    onSuccess: () => {
+    mutationFn: (credentials: { u: string; p: string }) => login(credentials.u, credentials.p),
+    onSuccess: (data) => {
+      // Guardar en localStorage
+      localStorage.setItem('authToken', data.token)
+      localStorage.setItem('user', JSON.stringify({ username: data.username, roles: data.roles }))
+      
+      // Actualizar store
+      setIsAuthenticated(true)
+      setUser({ username: data.username, roles: data.roles })
+      
       navigate({ to: '/' })
     },
     onError: (error) => {
@@ -24,7 +33,7 @@ function Login() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
-    mutation.mutate()
+    mutation.mutate({ u: username, p: password })
   }
 
   return (

@@ -7,6 +7,8 @@ interface AppState {
   isMenuFixed: boolean
   theme: Theme
   tasks: string[]
+  isAuthenticated: boolean
+  user: { username: string; roles: string[] } | null
 }
 
 //Store en su estado inicial
@@ -14,9 +16,25 @@ export const appStore = new Store<AppState>({
   isMenuFixed: false,
   theme: 'dark',
   tasks: ['Tarea inicial 1', 'Tarea inicial 2'],
+  isAuthenticated: !!localStorage.getItem('authToken'),
+  user: localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')!) : null,
 })
 
 //Funciones "setter" exportables para modificar el estado de forma inmutable
+
+export const setIsAuthenticated = (isAuthenticated: boolean) => {
+  appStore.setState((state) => ({
+    ...state,
+    isAuthenticated,
+  }))
+}
+
+export const setUser = (user: { username: string; roles: string[] } | null) => {
+  appStore.setState((state) => ({
+    ...state,
+    user,
+  }))
+}
 
 //Cambia el estado del menú entre fijo y dinámico.
 export const toggleMenuFixed = () => {

@@ -83,7 +83,12 @@ function Heroes() {
       {/* Listado de Héroes */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {heroes?.map((heroe) => (
-          <div key={heroe.idHeroe} className="border p-4 rounded shadow hover:shadow-md transition-shadow bg-white dark:bg-gray-800 dark:border-gray-700">
+          <div key={heroe.idHeroe} className="border p-4 rounded shadow hover:shadow-md transition-shadow bg-white dark:bg-gray-800 dark:border-gray-700 flex flex-col items-center text-center">
+            <img 
+              src={`https://robohash.org/${encodeURIComponent(heroe.nombre)}?size=150x150`} 
+              alt={heroe.nombre}
+              className="w-32 h-32 mb-4 rounded-full bg-gray-100 dark:bg-gray-700 p-2"
+            />
             <h3 className="font-bold text-lg">{heroe.nombre}</h3>
             <p className="text-gray-600 dark:text-gray-300">Base: {heroe.base}</p>
             {heroe.descripcion && <p className="text-sm mt-2">{heroe.descripcion}</p>}
