@@ -7,6 +7,19 @@ export interface Heroe {
   nombre: string;
   base: string | null;
   descripcion?: string;
+  equipo?: {
+    idEquipo: number;
+    nombre: string;
+    ciudad: string;
+  };
+}
+
+export interface CreateHeroeRequest {
+  nombre: string;
+  base: string;
+  miEquipo: {
+    idEquipo: number;
+  };
 }
 
 export interface HeroeResumen {
@@ -28,7 +41,7 @@ export async function getHeroes() {
   return response as unknown as Heroe[];
 }
 
-export async function createHeroe(heroe: Partial<Heroe>) {
+export async function createHeroe(heroe: CreateHeroeRequest) {
   const response = await client.post<Heroe>("/heroes", heroe);
   return response as unknown as Heroe;
 }

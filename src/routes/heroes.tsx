@@ -1,7 +1,7 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
-import { getHeroes, createHeroe } from '../api/heroesService'
-import type { Heroe } from '../api/heroesService'
+import { getHeroes, createHeroe, getEquipos } from '../api/heroesService'
+import type { CreateHeroeRequest } from '../api/heroesService'
 import { useState } from 'react'
 
 export const Route = createFileRoute('/heroes')({
@@ -12,7 +12,7 @@ function Heroes() {
   const queryClient = useQueryClient()
   
   // 1. Query para obtener los héroes (GET)
-  const { data: heroes, isLoading, error } = useQuery({
+  const { data: heroes, isLoading: isLoadingHeroes, error: errorHeroes } = useQuery({
     queryKey: ['heroes'],
     queryFn: async () => {
       const data = await getHeroes()
@@ -21,17 +21,36 @@ function Heroes() {
     },
   })
 
-  // Estado para el formulario de nuevo héroe
-  const [newHeroe, setNewHeroe] = useState<Partial<Heroe>>({ nombre: '', base: '' })
+  // 2. Query para obtener los equipos (GET)
+  const { data: equipos, isLoading: isLoadingEquipos } = useQuery({
+    queryKey: ['equipos'],
+    queryFn: getEquipos,
+  })
 
-  // 2. Mutación para crear héroe (POST)
+  // Estado para el formulario de nuevo héroe
+  const [newHeroe, setNewHeroe] = useState<{ nombre: string; base: string; idEquipo: string }>({ 
+    nombre: '', 
+    base: '',
+    idEquipo: ''
+  })
+
+  // 3. Mutación para crear héroe (POST)
   const mutation = useMutation({
-    mutationFn: createHeroe,
+    mutationFn: (data: { nombre: string; base: string; idEquipo: string }) => {
+      const payload: CreateHeroeRequest = {
+        nombre: data.nombre,
+        base: data.base,
+        miEquipo: {
+          idEquipo: parseInt(data.idEquipo)
+        }
+      }
+      return createHeroe(payload)
+    },
     onSuccess: () => {
       // Invalidamos la query 'heroes' para que se recargue la lista automáticamente
       queryClient.invalidateQueries({ queryKey: ['heroes'] })
       // Limpiamos el formulario
-      setNewHeroe({ nombre: '', base: '' })
+      setNewHeroe({ nombre: '', base: '', idEquipo: '' })
     },
     onError: (err) => {
       alert('Error al crear héroe: ' + err)
@@ -40,11 +59,15 @@ function Heroes() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
+    if (!newHeroe.idEquipo) {
+      alert('Debes seleccionar un equipo')
+      return
+    }
     mutation.mutate(newHeroe)
   }
 
-  if (isLoading) return <div className="p-4">Cargando héroes...</div>
-  if (error) return <div className="p-4 text-red-500">Error: {error.message}</div>
+  if (isLoadingHeroes) return <div className="p-4">Cargando héroes...</div>
+  if (errorHeroes) return <div className="p-4 text-red-500">Error: {errorHeroes.message}</div>
 
   return (
     <div className="p-4">
@@ -68,15 +91,31 @@ function Heroes() {
             <label className="block text-sm font-medium">Base</label>
             <input
               type="text"
-              value={newHeroe.base || ''}
+              value={newHeroe.base}
               onChange={(e) => setNewHeroe({ ...newHeroe, base: e.target.value })}
               className="border p-2 rounded dark:bg-gray-700 dark:border-gray-600"
               required
             />
           </div>
+          <div>
+            <label className="block text-sm font-medium">Equipo</label>
+            <select
+              value={newHeroe.idEquipo}
+              onChange={(e) => setNewHeroe({ ...newHeroe, idEquipo: e.target.value })}
+              className="border p-2 rounded dark:bg-gray-700 dark:border-gray-600 min-w-[200px]"
+              required
+            >
+              <option value="">Selecciona un equipo</option>
+              {equipos?.map((equipo) => (
+                <option key={equipo.idEquipo} value={equipo.idEquipo}>
+                  {equipo.nombre} ({equipo.ciudad})
+                </option>
+              ))}
+            </select>
+          </div>
           <button
             type="submit"
-            disabled={mutation.isPending}
+            disabled={mutation.isPending || isLoadingEquipos}
             className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 disabled:opacity-50"
           >
             {mutation.isPending ? 'Guardando...' : 'Crear'}
