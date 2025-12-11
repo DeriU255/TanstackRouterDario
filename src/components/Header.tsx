@@ -234,7 +234,7 @@ const NavContent = ({ closeMenu }: { closeMenu?: () => void }) => {
         }`}
         activeProps={{ className: 'bg-cyan-600 hover:bg-cyan-700' }}
       >
-        <span className="font-medium">🦸 Héroes</span>
+        <span className="font-medium">Héroes</span>
       </Link>
 
       <Link
@@ -245,7 +245,7 @@ const NavContent = ({ closeMenu }: { closeMenu?: () => void }) => {
         }`}
         activeProps={{ className: 'bg-cyan-600 hover:bg-cyan-700' }}
       >
-        <span className="font-medium">🛡️ Equipos</span>
+        <span className="font-medium">Equipos</span>
       </Link>
 
       <Link
@@ -256,7 +256,7 @@ const NavContent = ({ closeMenu }: { closeMenu?: () => void }) => {
         }`}
         activeProps={{ className: 'bg-cyan-600 hover:bg-cyan-700' }}
       >
-        <span className="font-medium">🔑 Login</span>
+        <span className="font-medium">Login</span>
       </Link>
     </nav>
   )
